@@ -1,0 +1,36 @@
+#mysql installation commands-
+#going to root user
+sudo su
+sudo yum install -y https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+sudo amazon-linux-extras install epel -y
+sudo yum install -y mysql-community-server
+#imported GPG-KEY:
+sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+#Installing the mysql server
+sudo yum install mysql-server -y
+#Starting the mysql server
+sudo systemctl start mysqld 
+sudo systemctl enable mysqld
+#Get the password for the root user:
+sudo grep 'temporary password' /var/log/mysqld.log
+#Login to MySQL:
+mysql -u root -p
+#You have to change the root user's password before you can do anything
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Sachin@20';
+
+
+#Now we can access the database with this user from the ec2 instance. So If I installed a web app on this instance, I could use this username and password.
+
+CREATE USER 'sam'@'localhost' IDENTIFIED WITH mysql_native_password BY 'MyNewPass1!';
+GRANT ALL PRIVILEGES ON lotr.* TO 'sam'@'localhost';
+
+
+#However, if you want to be able to access the database from anywhere else, First, we have to create a new user that can access this database from any host.
+CREATE USER 'sachin'@'%' IDENTIFIED WITH mysql_native_password BY 'Sachin@20';
+GRANT ALL PRIVILEGES ON *.* TO 'sachin'@'%';
+
+#jdk 11 installation
+sudo amazon-linux-extras install java-openjdk11
+
+#running the jar file
+java -jar jarfilename
